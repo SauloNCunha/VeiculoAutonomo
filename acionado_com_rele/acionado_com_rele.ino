@@ -1,13 +1,18 @@
 #include <Ultrasonic.h>
 
-const int dianteiro = 9;
-const int traseiro = 8;
+const int dianteiro = 7;
+const int traseiro = 6;
 
-#define pino_trigger 5
-#define pino_echo 6
+const int infraVermelho = 8;
 
+#define pino_triggerD 4
+#define pino_echoD 5
 
-Ultrasonic ultrasonic(pino_trigger, pino_echo);
+#define pino_triggerE 2
+#define pino_echoE 3
+
+Ultrasonic ultrasonicD(pino_triggerD, pino_echoD);
+Ultrasonic ultrasonicE(pino_triggerE, pino_echoE);
 
 void setup() {
 
@@ -15,17 +20,22 @@ void setup() {
  Serial.println("Lendo dados do sensor...");
  pinMode(dianteiro, OUTPUT);
  pinMode(traseiro, OUTPUT);
+
 }
 
 void loop() {
     //Le as informacoes do sensor, em cm e pol
-    float cmMsec, inMsec;
-    long microsec = ultrasonic.timing();
-    cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM);
-    //inMsec = ultrasonic.convert(microsec, Ultrasonic::IN);
+    float cmMsecD,cmMsecE;
+    long microsec1 = ultrasonicD.timing();
+    long microsec2 = ultrasonicE.timing();
+    cmMsecD = ultrasonicD.convert(microsec1, Ultrasonic::CM);
+    cmMsecE = ultrasonicE.convert(microsec2, Ultrasonic::CM);
     //Exibe informacoes no serial monitor
 
-    if(cmMsec <= 10){
+    
+    int C = digitalRead(infraVermelho);
+
+    if( (C == 0) || (cmMsecD <= 5) || (cmMsecE <=5)  ){
           digitalWrite(dianteiro, LOW);
           digitalWrite(traseiro, LOW);
     }
@@ -34,7 +44,13 @@ void loop() {
          digitalWrite(traseiro, HIGH);
     }
     
-    //delay(5000);
-    Serial.print("Distancia em cm: ");
-    Serial.println(cmMsec);
+    delay(1000);
+    Serial.print("Distancia Direita em cm: ");
+    Serial.println(cmMsecD);
+    Serial.print("Distancia Esquerda em cm: ");
+    Serial.println(cmMsecE);
+    Serial.print("Infra Vermelho ");
+    Serial.println(C);
+    
+    
 }
