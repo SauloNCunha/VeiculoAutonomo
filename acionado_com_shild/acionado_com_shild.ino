@@ -1,6 +1,8 @@
 #include <Servo.h>
 
-
+int angatual = 0; // angulo atual do servo
+int angulo = 0; // angulo a ser atualizado
+bool direita = false;
 
 #define velDiant 5 //portas definidas pela shild para os motores (padrao)
 #define dirDiant 0 //portas definidas pela shild para os motores (padrao) 
@@ -122,47 +124,43 @@ void re(){
   analogWrite(velTras,maxSpeed);
 }
 
-void esquerda(){
-  int angulo = dir;
-  for (angulo; angulo < 360; angulo += 1) { // Comando que muda a posição do servo de 0 para 180°
-  servo.write(angulo); // Comando para angulo específico
-  delay(15); 
+void direcao(){
+  angatual = angulo;
+  
+  // Adicionar afino da distancia com o angulo e passar para a variavel angulo
+  // afino irá retornar valor para angAtual, no qual irá atualizar a variavel angulo a partir da distancia do sensor ultrassonico
+  // j irá incrementar do atual até o necessário para robo fazer a curva certa.
+  // dentro da funcao angulacao() deve retornar, caso esquerda variavel direita = false, caso contrario direita = true.
+  
+  angulo = dir; // apos fazer funcao angulacao() tricar dir pelo retorno da funcao.
+  int j = angatual;
+  
+  if (direita){
+    
+    for (j ; j =< angulo ; j += 1) { // Comando que muda a posição do servo de 0 para 180°
+    servo.write(angulo); // Comando para angulo específico
+    delay(15); // delay pode diminuir de acordo com a velocidade do robo
+    }
+  }else{
+  
+    
+    for (angulo = 360; angulo >= 1; angulo -= 5) { // Comando que muda a posição do servo de 180 para 0°
+    servo.write(angulo); // Comando para angulo específico
+    delay(5);
+    }
   }
-  
-  delay(2000); // Tempo de espera para próximo movimento
-  for (angulo = 360; angulo >= 1; angulo -= 5) { // Comando que muda a posição do servo de 180 para 0°
-  servo.write(angulo); // Comando para angulo específico
-  delay(5);
-  }
-  
-delay(2000);
-  
-  /*// Lê o valor do Potenciometro
-  int angle = dir; 
-  // Mapeia o valor de 0 a 180 graus
-  angle=map(angle, 0, 1023, 0, 180);
-  // Repassa o angulo ao ServoWrite
-  servo.write(angle); 
-  // Delay de 15ms para o Servo alcançar a posição
-  delay(15);*/
 }
 
 void loop(){
   distancia();
 
-  /*frente();
-  delay(2000);
   
-  re();
-  delay(2000);
-
-  pontomorto();
-  delay(2000);*/
-  //esquerda();
+  
   if(dir <= 10 ) {
     pontomorto();
   }
   else{
+  direcao();
   frente();
   
   //re();
