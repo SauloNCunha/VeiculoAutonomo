@@ -1,5 +1,3 @@
-
-  
 void conectaWiFi() {
 
   if (WiFi.status() == WL_CONNECTED) {
@@ -21,5 +19,4 @@ void conectaWiFi() {
   Serial.print(SSID);  
   Serial.print("  IP obtido: ");
   Serial.println(WiFi.localIP()); 
-  Serial.println("----------------------");  
 }

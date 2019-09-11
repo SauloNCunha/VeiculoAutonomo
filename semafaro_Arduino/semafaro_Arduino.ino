@@ -1,10 +1,12 @@
 #include <ESP8266WiFi.h> 
 #include <ESP8266Ping.h>
 #include <PubSubClient.h>
+#include "Adafruit_VL53L0X.h"     /*Biblioteca do laser */
+#include <Wire.h>                 /*Biblioteca para declaração das portas SDA e SCL*/
 
-#define vermelho 15  
-#define amarelo 13
-#define verde 12
+#define vermelho 2  /*D4*/
+#define amarelo 0   /*D3*/
+#define verde 4    /*D2*/
 
 //WiFi
 const char* SSID = "NotebookSaulo";                // SSID / nome da rede WiFi que deseja se conectar
@@ -16,9 +18,10 @@ const IPAddress remote_ip(192, 168, 50, 233); // Remote host
 const char* BROKER_MQTT = "192.168.137.1";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar
 int BROKER_PORT = 1883;                      // Porta do Broker MQTT
 
-#define ID_MQTT  "SEMAFARO"             //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
-#define STATUS "STATUS"   //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
-#define TEMPO "TEMPO"   //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
+#define ID_MQTT  "SEMAFARO"     //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
+#define STATUS "STATUS"         //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
+#define TEMPO "TEMPO"           //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
+#define DISTANCIA "DISTANCIA"   //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
 
 PubSubClient MQTT(wifiClient);        // Instancia o Cliente MQTT passando o objeto espClient
 
@@ -29,8 +32,15 @@ void conectaMQTT();     //Faz conexão com Broker MQTT
 //void recebePacote(char* topic, byte* payload, unsigned int length);
 void semafaro();
 void enviaStatus(int token,int tempo);
+void distanciaLaser();
+
+double fre = 0;
+Adafruit_VL53L0X lox = Adafruit_VL53L0X(); /*DECLARAÇÃO DO LASER*/
+
 
 void setup() {
+           /*D6,D7*/ 
+  Wire.begin(13,12); /*/DECLARA SCL E DEPOIS A SDA DO LASER*/
   pinMode(vermelho, OUTPUT);         
   pinMode(amarelo, OUTPUT);
   pinMode(verde, OUTPUT);
@@ -45,6 +55,19 @@ void setup() {
   conectaWiFi();
   MQTT.setServer(BROKER_MQTT, BROKER_PORT);  
   //MQTT.setCallback(recebePacote); 
+
+   /* VERIFICA A PORTA USB CONECTADA*/
+    while (! Serial) {
+      delay(1);
+    }
+
+    Serial.println("Adafruit VL53L0X test");
+    if (!lox.begin()) {
+      Serial.println(F("Failed to boot VL53L0X"));
+      while(1);
+    }
+    /* LIGA O LASER */
+    Serial.println(F("VL53L0X API Simple Ranging example\n\n")); 
 }
 
 void loop() {
@@ -138,6 +161,7 @@ void semafaro(){
 
 void enviaStatus(int token,int tempo){
 
+    
     String stempo = String(tempo);
      //MQTT.publish(STATUS,stoken);
      //MQTT.publish(TEMPO,stempo);
@@ -204,5 +228,38 @@ void enviaStatus(int token,int tempo){
      else if (token == 3){//amarelo
           Serial.println("Status: Amarelo Tempo: " + stempo);
           MQTT.publish(STATUS,"3");
-     }  
+     } 
+
+    distanciaLaser(); 
+     
 } 
+
+void distanciaLaser(){
+  /*-------------------------------*/
+    /*Codigo do Laser*/
+   
+    VL53L0X_RangingMeasurementData_t measure;  
+    Serial.print("Lendo a medida... ");
+    lox.rangingTest(&measure, false);
+
+    if (measure.RangeStatus != 4) {
+      Serial.print("Distancia laser (cm): "); 
+      Serial.println((measure.RangeMilliMeter-40)/10);
+      fre = (measure.RangeMilliMeter-40)/10;
+    } else {
+      Serial.println(" Fora de alcance! ");
+      fre = 1;
+    } 
+  
+    /*------------------------------- */
+
+    String tempDis;
+    tempDis = (fre, DEC);
+    String dir = String(tempDis);
+    /*converte Float para String*/
+    char buffer[10];
+    dtostrf(fre,2, 2, buffer);
+    /*-------------------------*/
+    Serial.println("Dinstancia: " + dir);
+    MQTT.publish(DISTANCIA,buffer);
+}
