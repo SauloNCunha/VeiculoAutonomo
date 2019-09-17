@@ -9,14 +9,15 @@
 #define verde 4    /*D2*/
 
 //WiFi
-const char* SSID = "NotebookSaulo";                // SSID / nome da rede WiFi que deseja se conectar
-const char* PASSWORD = "Saulo1004";   // Senha da rede WiFi que deseja se conectar
-WiFiClient wifiClient;   
+const char* SSID ="Adriana"; /*"MostraProfissoes";       */         /* SSID / nome da rede WiFi que deseja se conectar*/
+const char* PASSWORD = "123oliv456";/*"profissoes"; */  /* Senha da rede WiFi que deseja se conectar*/
+WiFiClient wifiClient; 
+    
 const IPAddress remote_ip(192, 168, 50, 233); // Remote host                   
  
 //MQTT Server
-const char* BROKER_MQTT = "192.168.137.1";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar
-int BROKER_PORT = 1883;                      // Porta do Broker MQTT
+const char* BROKER_MQTT ="broker.hivemq.com";/*"192.168.137.1";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
+int BROKER_PORT = 1883; /*                     // Porta do Broker MQTT*/
 
 #define ID_MQTT  "SEMAFARO"     //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
 #define STATUS "STATUS"         //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.

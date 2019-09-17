@@ -10,28 +10,16 @@ void distancia() {
     digitalWrite(TRIGGERdir, LOW);
     duration = pulseIn(ECHOdir, HIGH);
     esq = (duration/2) / 29.1;
-    Serial.print("Distancia Utrassonico: ");
-    Serial.println(esq);
-  
-    
 
-    /*long duration, distance;
-    digitalWrite(TRIGGERdir, LOW);  
-    delayMicroseconds(2); 
-  
-    digitalWrite(TRIGGERdir, HIGH);
-    delayMicroseconds(10); 
-  
-    digitalWrite(TRIGGERdir, LOW);
-    duration = pulseIn(ECHOdir, HIGH);
-    fre = (duration/2) / 29.1;*/
+
+    fre = distanciaLaser();
 }
 
 
 float distanciaLaser(){
   /*-------------------------------*/
     /*Codigo do Laser*/
-   /*
+   
     VL53L0X_RangingMeasurementData_t measure;  
     Serial.print("Lendo a medida... ");
     lox.rangingTest(&measure, false);
@@ -45,6 +33,6 @@ float distanciaLaser(){
       fre = 1;
     } 
 
-    return fre;*/
+    return fre;
     /*------------------------------- */
 }

@@ -13,8 +13,8 @@ void conectaMQTT() {
         if (MQTT.connect(ID_MQTT)) {
             Serial.println("Conectado ao Broker com sucesso!");
             MQTT.subscribe(STATUS);
-             MQTT.subscribe(TEMPO);
-             MQTT.subscribe(DISTANCIA);  
+            MQTT.subscribe(TEMPO);
+            MQTT.subscribe(DISTANCIA);  
         } 
         else {
             Serial.println("Noo foi possivel se conectar ao broker.");
@@ -51,6 +51,8 @@ void recebePacote(char* topic, byte* payload, unsigned int length)
        recebeTempo(tempoS);
        Serial.print("tempo");
        Serial.println(tempoS);
+       Serial.println(recebeTempo(tempoS));
+       tempoSem= recebeTempo(tempoS);
     }
     
     if (topicoo == "STATUS"){
@@ -58,6 +60,8 @@ void recebePacote(char* topic, byte* payload, unsigned int length)
        recebeStatus(statsS);
        Serial.print("Status");
        Serial.println(statsS);
+       Serial.println(recebeStatus(statsS));
+       statusSem = recebeStatus(statsS);
     }
 
     if (topicoo == "DISTANCIA"){
@@ -65,5 +69,7 @@ void recebePacote(char* topic, byte* payload, unsigned int length)
        recebeDistancia(distaS);
        Serial.print("Distancia Semafaro: ");
        Serial.println(distaS);
+        Serial.println(recebeDistancia(distaS));
+        disSem = recebeDistancia(distaS);
     }
 }

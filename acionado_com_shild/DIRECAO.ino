@@ -19,31 +19,62 @@ void re(){
   analogWrite(velTras,maxSpeed);
 }
 
+void reto(){
+  
+  
+     pos = 90;
+     servo.write(pos); /* Comando para angulo específico*/
+  
+}
+
 void esquerda(){
-    int angulo = esq;
-    for (angulo; angulo < 360; angulo += 1) { /* Comando que muda a posição do servo de 0 para 180°*/
-      servo.write(angulo); /* Comando para angulo específico*/
-      delay(15); 
-      frente();
-    }
-  
-   /*delay(2000);*/ /* Tempo de espera para próximo movimento*/
-    for (angulo = 360; angulo >= 1; angulo -= 5) { /* Comando que muda a posição do servo de 180 para 0°*/
-      servo.write(angulo); /* Comando para angulo específico*/
-      delay(5);
-      frente();
-    }
-  
-    /*delay(2000);*/
-  
-    /*
-    /* Lê o valor do Potenciometro
-    int angle = dir; 
-    /* Mapeia o valor de 0 a 180 graus
-    angle=map(angle, 0, 1023, 0, 180);
-    /* Repassa o angulo ao ServoWrite
-    servo.write(angle); 
-    /* Delay de 15ms para o Servo alcançar a posição
-    delay(15);
-    */
+    
+     if (pos < 130){
+        pos = pos+5;
+        servo.write(pos); 
+        delay(100);
+     }
+     /*
+     
+     for(pos; pos < 135; pos++){ /* Comando que muda a posição do servo de 180 para 0°*/
+      /*   servo.write(pos); /* Comando para angulo específico*/
+    /*  delay(18); 
+      
+      distancia();
+      Serial.print("Esquerda "); 
+    Serial.println(esq); 
+       //delay(20); 
+      if (esq < 5.6){
+        
+       
+        break;
+       
+      }
+   }*/
+}
+
+void direita(){
+   
+     if (pos > 50){
+        pos = pos-5;
+        servo.write(pos); 
+        delay(100);
+     }
+     /*
+     for(pos; pos > 50; pos--){ /* Comando que muda a posição do servo de 180 para 0°*/
+     /*    servo.write(pos); /* Comando para angulo específico*/
+    /*     delay(18); 
+       
+             distancia();
+              Serial.print("Direita "); 
+        Serial.println(esq);
+        // delay(20); 
+         if (esq > 4.5){
+      
+           break;
+           
+           }
+         }
+
+         */
 }

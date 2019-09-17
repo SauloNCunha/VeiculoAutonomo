@@ -46,6 +46,8 @@ int recebeTempo(String tempo){
       else if(tempo == "15"){
         return 15;
       }
+       Serial.print("tempo");
+       Serial.println(tempoS);
 }
 
 int recebeStatus(String statu){
