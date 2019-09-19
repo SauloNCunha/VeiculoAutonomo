@@ -46,22 +46,12 @@ int recebeTempo(String tempo){
       else if(tempo == "15"){
         return 15;
       }
-       Serial.print("tempo");
-       Serial.println(tempoS);
+       /*Serial.print("tempo");*/
+       /*Serial.println(tempoS);*/
 }
 
-int recebeStatus(String statu){
-    if (statu == "1"){//vermelho
-           return 1;
-        
-     }
-     else if (statu == "2"){//Verde
-            return 2;
-     }
-     else if (statu == "3"){//amarelo
-            return 3; 
-     }       
-     
+int recebeStatus(String statu){  
+  return statu.toInt();     
 } 
 
 float  recebeDistancia(String distanciac){

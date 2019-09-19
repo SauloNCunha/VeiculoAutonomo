@@ -29,10 +29,10 @@ void reto(){
 
 void esquerda(){
     
-     if (pos < 130){
+     if (pos < 120){
         pos = pos+5;
         servo.write(pos); 
-        delay(100);
+        delay(50);
      }
      /*
      
@@ -58,7 +58,7 @@ void direita(){
      if (pos > 50){
         pos = pos-5;
         servo.write(pos); 
-        delay(100);
+        delay(70);
      }
      /*
      for(pos; pos > 50; pos--){ /* Comando que muda a posição do servo de 180 para 0°*/

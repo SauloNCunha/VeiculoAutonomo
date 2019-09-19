@@ -2,16 +2,16 @@
 #include <Wire.h>                 /*Biblioteca para declaração das portas SDA e SCL*/
 #include <Servo.h>                /*Biblioteca do Servo Motor*/  
 #include <Ultrasonic.h>           /*Biblioteca do do Ultrasonico*/
-#include <ESP8266WiFi.h>          /*Biblioteca WIFI para ESP */
+#include <ESP8266WiFi.h>           /*Biblioteca WIFI para ESP */
 #include <PubSubClient.h>         /*Biblioteca do MQTT */
 
 //WiFi
-const char* SSID ="Adriana"; /*"MostraProfissoes";       */         /* SSID / nome da rede WiFi que deseja se conectar*/
-const char* PASSWORD = "123oliv456";/*"profissoes"; */  /* Senha da rede WiFi que deseja se conectar*/
+const char* SSID = "carro"; /*"NotebookSaulo";"MostraProfissoes";              /* SSID / nome da rede WiFi que deseja se conectar*/
+const char* PASSWORD = "unifor2019";/*"Saulo1004";  "profissoes";   /* Senha da rede WiFi que deseja se conectar*/
 WiFiClient wifiClient; 
   
 //MQTT Server
-const char* BROKER_MQTT ="broker.hivemq.com";/*"192.168.137.1";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
+const char* BROKER_MQTT ="192.168.1.148";/*"broker.hivemq.com";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
 int BROKER_PORT = 1883;               /*       // Porta do Broker MQTT*/
 
 #define ID_MQTT  "CARRO"      /*Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. */
@@ -66,6 +66,7 @@ float  recebeDistancia(String distanciac);
 void pontomorto();
 void frente();
 void re();
+void reto();
 void esquerda();
 void direita();
 void distancia() ;
@@ -131,32 +132,34 @@ void loop() {
   
      distancia();
   
-   if((esq >= 4.5) &&(esq <= 5.5 )) {
+   if((esq >= 5) &&(esq <= 6 )) {
      reto();
-   }else if (esq >= 5.6 ){
+   }else if (esq >= 6.1 ){
       esquerda();    
-    }else if(esq <= 4.4){
+    }else if(esq <= 4.9){
       direita();
     }
 
-    if (fre >= 15) {
-      if ((statusSem = 2) or (statusSem = 3)){
-        if (disSem >60){
-           frente();
-        }else{
-          pontomorto();
-        }
-        
-      }else if ((statusSem = 1) && (disSem >30)){
-         frente();
-      }else {
-        pontomorto();
-      }    
-     
-    } else {
+    Serial.print("laser do robô: ");
+    Serial.println(fre);
+    if (fre >= 10) {
+          //Serial.print("Distância semáforo: ");
+          //Serial.println(disSem);
+         Serial.print("Status semáforo: ");
+          Serial.println(statusSem);
+          if ((disSem < 30) && (statusSem == 1)){
+             //Serial.println("vai aplicar ponto morto");
+             pontomorto();
+          }else if ((disSem < 30) &&((statusSem == 2) || (statusSem == 3))){
+                 // Serial.println("segue pq semáforo amarelo ou verde");
+                  frente();
+          }else{ 
+            //Serial.println("segue pq não entrou em nada");
+            frente();
+          }
+    }else{
       pontomorto();
     }
-
     
   
   /*if(fre <= 15 ) {

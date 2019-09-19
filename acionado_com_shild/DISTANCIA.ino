@@ -21,15 +21,15 @@ float distanciaLaser(){
     /*Codigo do Laser*/
    
     VL53L0X_RangingMeasurementData_t measure;  
-    Serial.print("Lendo a medida... ");
+    /*Serial.print("Lendo a medida... ");*/
     lox.rangingTest(&measure, false);
 
     if (measure.RangeStatus != 4) {
-      Serial.print("Distancia laser (cm): "); 
-      Serial.println((measure.RangeMilliMeter-40)/10);
+     /* Serial.print("Distancia laser (cm): "); */
+     /* Serial.println((measure.RangeMilliMeter-40)/10);*/
       fre = (measure.RangeMilliMeter-40)/10;
     } else {
-      Serial.println(" Fora de alcance! ");
+     /* Serial.println(" Fora de alcance! ");*/
       fre = 1;
     } 
 
