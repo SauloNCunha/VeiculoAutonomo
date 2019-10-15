@@ -112,32 +112,17 @@ void setup() {
 }
 
 void loop() {
-  mantemConexoes();
-  MQTT.loop();
-
+    mantemConexoes();
+    MQTT.loop();
+    
+    distancia();
   
-
-   /**
-   distancia();
-
-  frente();
-  /*delay(2000);
-  
-  re();
-  delay(2000);
-  pontomorto();
-  delay(2000);*/
-  /*esquerda();*/
-   
-  
-     distancia();
-  
-   if((esq >= 5) &&(esq <= 6 )) {
-     reto();
-   }else if (esq >= 6.1 ){
-      esquerda();    
+    if((esq >= 5) &&(esq <= 6 )) {
+       reto();
+    }else if (esq >= 6.1 ){
+        esquerda();    
     }else if(esq <= 4.9){
-      direita();
+       direita();
     }
 
     Serial.print("laser do robô: ");
@@ -159,17 +144,5 @@ void loop() {
           }
     }else{
       pontomorto();
-    }
-    
-  
-  /*if(fre <= 15 ) {
-   pontomorto();
-   Serial.print("Ponto Morto"); 
-  }
-  else{
-  frente(); 
-  
-  re();*/
-  
-  
+    }  
 }

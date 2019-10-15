@@ -9,12 +9,12 @@
 #define verde 4    /*D2*/
 
 //WiFi
-const char* SSID = "carro"; /*"NotebookSaulo";"MostraProfissoes";              /* SSID / nome da rede WiFi que deseja se conectar*/
-const char* PASSWORD = "unifor2019";/*"Saulo1004";  "profissoes";   /* Senha da rede WiFi que deseja se conectar*/
+const char* SSID = "NotebookSaulo";/*"carro"; "MostraProfissoes";              /* SSID / nome da rede WiFi que deseja se conectar*/
+const char* PASSWORD = "Saulo1004";/*"unifor2019";  "profissoes";   /* Senha da rede WiFi que deseja se conectar*/
 WiFiClient wifiClient; 
   
 //MQTT Server
-const char* BROKER_MQTT ="192.168.1.148";/*"broker.hivemq.com";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
+const char* BROKER_MQTT ="192.168.137.1";/*"192.168.1.148";"broker.hivemq.com";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
 int BROKER_PORT = 1883;
     
 const IPAddress remote_ip(192, 168, 50, 233); // Remote host                   
