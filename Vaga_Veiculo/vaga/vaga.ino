@@ -17,7 +17,7 @@ int BROKER_PORT = 1883;
 
 float disVaga =0 ;
  
-#define ID_MQTT  "SEMAFARO"     //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
+#define ID_MQTT  "MAQUETE_SEM"     //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
 #define VAGA1 "VAGA1"         //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
 #define STAVAGA1 "STAVAGA1"
 #define VAGA2 "VAGA2"

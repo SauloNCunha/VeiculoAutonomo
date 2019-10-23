@@ -6,12 +6,12 @@
 #include <PubSubClient.h>         /*Biblioteca do MQTT */
 
 //WiFi
-const char* SSID = "carro"; /*"NotebookSaulo";"MostraProfissoes";              /* SSID / nome da rede WiFi que deseja se conectar*/
-const char* PASSWORD = "unifor2019";/*"Saulo1004";  "profissoes";   /* Senha da rede WiFi que deseja se conectar*/
+const char* SSID =  "NotebookSaulo";/*"carro";"MostraProfissoes";              /* SSID / nome da rede WiFi que deseja se conectar*/
+const char* PASSWORD = "Saulo1004";/*"unifor2019";  "profissoes";   /* Senha da rede WiFi que deseja se conectar*/
 WiFiClient wifiClient; 
   
 //MQTT Server
-const char* BROKER_MQTT ="192.168.1.148";/*"broker.hivemq.com";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
+const char* BROKER_MQTT ="192.168.137.1";/*"broker.hivemq.com";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
 int BROKER_PORT = 1883;               /*       // Porta do Broker MQTT*/
 
 #define ID_MQTT  "CARRO"      /*Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. */
@@ -35,7 +35,7 @@ String tempoS = " ";
 String statsS = " ";
 String distaS = " ";
 float esq = 0; /*CONTROLA DISTANCIA DA ESQUERDA*/
-float fre = 0; /*CONTROLA DISTANCIA DA FRENTE*/
+float fre = 20; /*CONTROLA DISTANCIA DA FRENTE*/
 float disSem = 20;
 int tempoSem = 15;
 int statusSem = 2;
@@ -57,7 +57,7 @@ void mantemConexoes();  //Garante que as conexoes com WiFi e MQTT Broker se mant
 void conectaWiFi();     //Faz conexão com WiFi
 void conectaMQTT();     //Faz conexão com Broker MQTT
 void recebePacote(char* topic, byte* payload, unsigned int length);
-float distanciaLaser();
+void distanciaLaser();
 
 int recebeTempo(String tempo);
 int recebeStatus(String statu);
@@ -116,6 +116,7 @@ void loop() {
     MQTT.loop();
     
     distancia();
+    distanciaLaser();
   
     if((esq >= 5) &&(esq <= 6 )) {
        reto();
@@ -125,8 +126,7 @@ void loop() {
        direita();
     }
 
-    Serial.print("laser do robô: ");
-    Serial.println(fre);
+    
     if (fre >= 10) {
           //Serial.print("Distância semáforo: ");
           //Serial.println(disSem);

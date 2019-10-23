@@ -55,7 +55,7 @@ void mantemConexoes();  //Garante que as conexoes com WiFi e MQTT Broker se mant
 void conectaWiFi();     //Faz conexão com WiFi
 void conectaMQTT();     //Faz conexão com Broker MQTT
 void recebePacote(char* topic, byte* payload, unsigned int length);
-float distanciaLaser();
+void distanciaLaser();
 
 int recebeTempo(String tempo);
 int recebeVaga(String statu);
@@ -114,6 +114,7 @@ void loop() {
     MQTT.loop();
     
     distancia();
+    distanciaLaser();
   
     if((esq >= 5) &&(esq <= 6 )) {
        reto();

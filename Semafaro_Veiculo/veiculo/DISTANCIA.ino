@@ -9,14 +9,13 @@ void distancia() {
   
     digitalWrite(TRIGGERdir, LOW);
     duration = pulseIn(ECHOdir, HIGH);
-    esq = (duration/2) / 29.1;
-
-
-    fre = distanciaLaser();
+    fre = (duration/2) / 29.1;
+    Serial.print("Frente: ");
+    Serial.println(fre);
 }
 
 
-float distanciaLaser(){
+void distanciaLaser(){
   /*-------------------------------*/
     /*Codigo do Laser*/
    
@@ -27,12 +26,12 @@ float distanciaLaser(){
     if (measure.RangeStatus != 4) {
      /* Serial.print("Distancia laser (cm): "); */
      /* Serial.println((measure.RangeMilliMeter-40)/10);*/
-      fre = (measure.RangeMilliMeter-40)/10;
+      esq = (measure.RangeMilliMeter-40)/10;
     } else {
      /* Serial.println(" Fora de alcance! ");*/
-      fre = 1;
+      esq = 1;
     } 
-
-    return fre;
     /*------------------------------- */
+    Serial.print("Esquerda: ");
+    Serial.println(esq);
 }

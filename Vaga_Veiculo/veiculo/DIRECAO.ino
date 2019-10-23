@@ -29,10 +29,10 @@ void reto(){
 
 void esquerda(){
     
-     if (pos < 120){
-        pos = pos+5;
+     if (pos < 125){
+        pos = pos+6;
         servo.write(pos); 
-        delay(50);
+        delay(57);
      }
      /*
      
