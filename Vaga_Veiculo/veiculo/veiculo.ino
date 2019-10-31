@@ -6,18 +6,20 @@
 #include <PubSubClient.h>         /*Biblioteca do MQTT */
 
 //WiFi
-const char* SSID = "carro"; /*"NotebookSaulo";"MostraProfissoes";              /* SSID / nome da rede WiFi que deseja se conectar*/
-const char* PASSWORD = "unifor2019";/*"Saulo1004";  "profissoes";   /* Senha da rede WiFi que deseja se conectar*/
+const char* SSID =  "NotebookSaulo";/*"MostraProfissoes";              /* SSID / nome da rede WiFi que deseja se conectar*/
+const char* PASSWORD = "Saulo1004"; /*  "profissoes";   /* Senha da rede WiFi que deseja se conectar*/
 WiFiClient wifiClient; 
   
 //MQTT Server
-const char* BROKER_MQTT ="192.168.1.148";/*"broker.hivemq.com";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
+const char* BROKER_MQTT ="192.168.137.1";/*"broker.hivemq.com";//"test.mosquitto.org"; //URL do broker MQTT que se deseja utilizar*/
 int BROKER_PORT = 1883;               /*       // Porta do Broker MQTT*/
 
 #define ID_MQTT  "CARRO"      /*Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. */
-#define STATUS "STATUS"       /*Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.*/
-#define TEMPO "TEMPO"         /*Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.*/
-#define DISTANCIA "DISTANCIA" /*Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.*/
+#define VAGA1 "VAGA1"       /*Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.*/
+#define VAGA2 "VAGA2"         /*Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.*/
+#define STAVAGA1 "STAVAGA1" /*Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.*/
+#define STAVAGA2 "STAVAGA2" /*Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.*/
+#define DISTANCIA "DISTANCIA"
 
 PubSubClient MQTT(wifiClient); /* Instancia o Cliente MQTT passando o objeto espClient*/
 
@@ -38,6 +40,9 @@ float esq = 0; /*CONTROLA DISTANCIA DA ESQUERDA*/
 float fre = 0; /*CONTROLA DISTANCIA DA FRENTE*/
 float disSem = 20;
 float esc =0;
+float dir = 0; /*CONTROLA DISTANCIA DA DIREITA*/
+float disVaga = 0;
+
 
 int minRange = 512;
 int maxRange = 512;
@@ -109,13 +114,15 @@ void setup() {
     
 }
 
+
 void loop() {
     mantemConexoes();
     MQTT.loop();
     
     distancia();
     distanciaLaser();
-  
+
+    /* CARRINHO IR PARA ESQUERDA LENDO LASER */
     if((esq >= 5) &&(esq <= 6 )) {
        reto();
     }else if (esq >= 6.1 ){
@@ -124,20 +131,54 @@ void loop() {
        direita();
     }
 
+    /* CARRIHO LENDO ULTRASSONICO PARA DIREITA */
+    if (disSem < 30) {
+      frente();
+      
+    }else{
+      pontomorto();
+    }
+    
+    
+
+    /* -------------------------------------- */
+
+    
     Serial.print("laser do robô: ");
     Serial.println(fre);
     if (fre >= 10) {
           //Serial.print("Distância semáforo: ");
           //Serial.println(disSem);
           //// mexer aqui de acordo com a vaga
-         Serial.print("Status semáforo: ");
-          Serial.println(statusSem);
-          if ((disSem < 30) && (statusSem == 1)){
+          Serial.print("Status semáforo: ");
+         // Serial.println(statusSem);
+          if (disSem < 30) {
              //Serial.println("vai aplicar ponto morto");
              pontomorto();
-          }else if ((disSem < 30) &&((statusSem == 2) || (statusSem == 3))){
-                 // Serial.println("segue pq semáforo amarelo ou verde");
+          }else if (disSem < 30) {
+                // Serial.println("segue pq semáforo amarelo ou verde");
                   frente();
+                  if((dir >= 5) &&(dir <= 6 )) {
+                    reto();
+                  }else if (dir >= 6.1 ){
+                    direita();    
+                  }else if(dir <= 4.9){
+                    esquerda();
+                  }else if (disVaga <= 15){
+                    pontomorto();
+                    delay(5000);
+                    re();
+                    delay(10000);
+                    pontomorto();
+                    delay(1000);
+                    frente();
+                    if((esq >= 5) &&(esq <= 6 )) {
+                      reto();
+                    }else if (esq >= 6.1 ){
+                      esquerda();    
+                    }else if(esq <= 4.9){
+                     direita();
+                    }
           }else{ 
             //Serial.println("segue pq não entrou em nada");
             frente();
@@ -145,4 +186,5 @@ void loop() {
     }else{
       pontomorto();
     }  
+    }
 }

@@ -23,6 +23,9 @@ void conectaMQTT() {
        
        Serial.println("STAVAGA2");
        MQTT.subscribe(STAVAGA2);
+
+       Serial.println("DISTANCIA");
+       MQTT.subscribe(DISTANCIA);
     }
     else {
       /*Serial.println("Noo foi possivel se conectar ao broker.");*/
@@ -33,61 +36,30 @@ void conectaMQTT() {
 }
 
 
-void recebePacote(char* topic, byte* payload, unsigned int length)
-{
-  String msg = " ";
-  String topicoo;
-  topicoo = "";
-  int tamanho = strlen(topic);
-  for (int j = 0; j < tamanho; j++) {
-    topicoo = topicoo + topic[j];
-  }
+void recebePacote(char* topic, byte* payload, unsigned int length){
+     String msg = " ";
+     String topicoo;
+     topicoo = "";
+     int tamanho = strlen(topic);
+     for (int j = 0; j < tamanho; j++) {
+         topicoo = topicoo + topic[j];
+     }
 
-  //obtem a string do payload recebido
+     //obtem a string do payload recebido
   
-  for (int i = 0; i < length; i++) {
-    char c = (char)payload[i];
-    msg += c;
-    if (topicoo == "STATUS") {
-      Serial.println("Status");
-      Serial.println(msg);
-    }
-    
-    
-  }
-
-  
-
-  
-
-  /*Serial.print("Topico: ");*/
-  /*Serial.println(topicoo);*/
-
-  if (topicoo == "TEMPO") {
-    tempoS = msg;
-    recebeTempo(tempoS);
-    /*Serial.print("tempo");*/
-    /*Serial.println(tempoS);*/
-    /*Serial.println(recebeTempo(tempoS));*/
-    tempoSem = recebeTempo(tempoS);
-  }
-
-  if (topicoo == "STATUS") {
-    
-    statsS = msg;
-    
-    /*Serial.print("Status");*/
-    /*Serial.println(statsS);*/
-    
-    statusSem = recebeStatus(statsS);
-  }
-
-  if (topicoo == "DISTANCIA") {
-    distaS = msg;
-    recebeDistancia(distaS);
-    /*Serial.print("Distancia Semafaro: ");*/
-    /*Serial.println(distaS);*/
-    /*Serial.println(recebeDistancia(distaS));*/
-    disSem = recebeDistancia(distaS);
-  }
+     for (int i = 0; i < length; i++) {
+         char c = (char)payload[i];
+         msg += c;
+     }
+     /*Serial.print("Topico: ");*/
+     /*Serial.println(topicoo);*/
+     
+     if (topicoo == "DISTANCIA") {
+        distaS = msg;
+        recebeDistancia(distaS);
+        Serial.print("Distancia Semafaro: ");
+        Serial.println(distaS);
+        Serial.println(recebeDistancia(distaS));
+        disSem = recebeDistancia(distaS);
+     } 
 }
