@@ -41,7 +41,7 @@ float fre = 0; /*CONTROLA DISTANCIA DA FRENTE*/
 float disSem = 20;
 float esc =0;
 float dir = 0; /*CONTROLA DISTANCIA DA DIREITA*/
-float disVaga = 0;
+float disVaga = 20;
 
 
 int minRange = 512;
@@ -121,6 +121,8 @@ void loop() {
     
     distancia();
     distanciaLaser();
+    Serial.print("laser do robô: ");
+    Serial.println(fre);
 
     /* CARRINHO IR PARA ESQUERDA LENDO LASER */
     if((esq >= 5) &&(esq <= 6 )) {
@@ -130,61 +132,59 @@ void loop() {
     }else if(esq <= 4.9){
        direita();
     }
+    
+    frente();
+    if (fre >= 10) {
+       //// mexer aqui de acordo com a vaga
+       if (disSem < 30) {
+          if (disVaga <= 15){
+             pontomorto();
+             delay(5000);
+             re();
+             delay(10000);
+             pontomorto();
+             delay(1000);
+             frente();
+             if ((esq >= 5) &&(esq <= 6 )) {
+                reto();
+             }else if (esq >= 6.1 ){
+                   esquerda();    
+             }else if(esq <= 4.9){
+                   direita();
+             }
+          }else{ 
+                //Serial.println("segue pq não entrou em nada");
+                frente();
+          }
+       }
+    }else{
+      pontomorto();
+    }  
+}
 
     /* CARRIHO LENDO ULTRASSONICO PARA DIREITA */
+    
+    /*
     if (disSem < 30) {
       frente();
       
     }else{
       pontomorto();
     }
-    
+    */
     
 
     /* -------------------------------------- */
 
-    
-    Serial.print("laser do robô: ");
-    Serial.println(fre);
-    if (fre >= 10) {
-          //Serial.print("Distância semáforo: ");
-          //Serial.println(disSem);
-          //// mexer aqui de acordo com a vaga
-          Serial.print("Status semáforo: ");
-         // Serial.println(statusSem);
-          if (disSem < 30) {
-             //Serial.println("vai aplicar ponto morto");
-             pontomorto();
-          }else if (disSem < 30) {
-                // Serial.println("segue pq semáforo amarelo ou verde");
-                  frente();
-                  if((dir >= 5) &&(dir <= 6 )) {
+/*
+ if((dir >= 5) && (dir <= 6 )) {
                     reto();
-                  }else if (dir >= 6.1 ){
-                    direita();    
-                  }else if(dir <= 4.9){
-                    esquerda();
-                  }else if (disVaga <= 15){
-                    pontomorto();
-                    delay(5000);
-                    re();
-                    delay(10000);
-                    pontomorto();
-                    delay(1000);
-                    frente();
-                    if((esq >= 5) &&(esq <= 6 )) {
-                      reto();
-                    }else if (esq >= 6.1 ){
-                      esquerda();    
-                    }else if(esq <= 4.9){
-                     direita();
-                    }
-          }else{ 
-            //Serial.println("segue pq não entrou em nada");
-            frente();
-          }
-    }else{
-      pontomorto();
-    }  
-    }
-}
+                }else if (dir >= 6.1 ){
+                      direita();    
+                }else if(dir <= 4.9){
+                      esquerda();
+                }
+ * 
+ * 
+ */
+    
