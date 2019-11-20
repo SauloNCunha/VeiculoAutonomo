@@ -29,36 +29,19 @@ void reto(){
 
 void esquerda(){
     
-     if (pos < 125){
+     if (pos < 123){
         pos = pos+6;
         servo.write(pos); 
-        delay(57);
+        delay(45);
      }
-     /*
-     
-     for(pos; pos < 135; pos++){ /* Comando que muda a posição do servo de 180 para 0°*/
-      /*   servo.write(pos); /* Comando para angulo específico*/
-    /*  delay(18); 
-      
-      distancia();
-      Serial.print("Esquerda "); 
-    Serial.println(esq); 
-       //delay(20); 
-      if (esq < 5.6){
-        
-       
-        break;
-       
-      }
-   }*/
 }
 
 void direita(){
    
-     if (pos > 50){
+     if (pos > 60){
         pos = pos-5;
         servo.write(pos); 
-        delay(70);
+        delay(40);
      }
      /*
      for(pos; pos > 50; pos--){ /* Comando que muda a posição do servo de 180 para 0°*/

@@ -127,12 +127,12 @@ void loop() {
     }
 
     
-    if (fre >= 10) {
+    if (fre >= 12) {
           //Serial.print("Distância semáforo: ");
           //Serial.println(disSem);
          Serial.print("Status semáforo: ");
           Serial.println(statusSem);
-          if ((disSem < 30) && (statusSem == 1)){
+          if ((disSem < 45) && (statusSem == 1)){
              //Serial.println("vai aplicar ponto morto");
              pontomorto();
           }else if ((disSem < 30) &&((statusSem == 2) || (statusSem == 3))){
