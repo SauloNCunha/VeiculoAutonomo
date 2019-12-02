@@ -19,62 +19,32 @@ void re(){
   analogWrite(velTras,maxSpeed);
 }
 
-void reto(){
-  
-  
-     pos = 90;
-     servo.write(pos); /* Comando para angulo específico*/
-  
+void reto(){  
+     pos = 90; /*por ser um servo motor de 180º o ponto central e 90º*/
+     servo.write(pos); /* Comando para angulo específico*/  
 }
 
 void esquerda(){
     
-     if (pos < 125){
+     if (pos < 123){
+    /*a cada interação do loop principal de acordo com a distância
+    do canteiro central adiciona 6º para que ele corrija seu 
+    trajeto para que o veículo fique entre 5 e 6 cm do canteiro central*/
         pos = pos+6;
+            
         servo.write(pos); 
-        delay(57);
+        delay(45);
      }
-     /*
-     
-     for(pos; pos < 135; pos++){ /* Comando que muda a posição do servo de 180 para 0°*/
-      /*   servo.write(pos); /* Comando para angulo específico*/
-    /*  delay(18); 
-      
-      distancia();
-      Serial.print("Esquerda "); 
-    Serial.println(esq); 
-       //delay(20); 
-      if (esq < 5.6){
-        
-       
-        break;
-       
-      }
-   }*/
 }
 
 void direita(){
    
-     if (pos > 50){
-        pos = pos-5;
+     if (pos > 60){
+     /*a cada interação do loop principal de acordo com a distância
+    do canteiro central adiciona 6º para que ele corrija seu 
+    trajeto para que o veículo fique entre 5 e 6 cm do canteiro central*/
+        pos = pos-6;
         servo.write(pos); 
-        delay(70);
+        delay(45);
      }
-     /*
-     for(pos; pos > 50; pos--){ /* Comando que muda a posição do servo de 180 para 0°*/
-     /*    servo.write(pos); /* Comando para angulo específico*/
-    /*     delay(18); 
-       
-             distancia();
-              Serial.print("Direita "); 
-        Serial.println(esq);
-        // delay(20); 
-         if (esq > 4.5){
-      
-           break;
-           
-           }
-         }
-
-         */
 }

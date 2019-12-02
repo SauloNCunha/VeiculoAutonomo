@@ -40,6 +40,7 @@ void recebePacote(char* topic, byte* payload, unsigned int length){
      String msg = " ";
      String topicoo;
      topicoo = "";
+     float temp;
      int tamanho = strlen(topic);
      for (int j = 0; j < tamanho; j++) {
          topicoo = topicoo + topic[j];
@@ -55,11 +56,18 @@ void recebePacote(char* topic, byte* payload, unsigned int length){
      /*Serial.println(topicoo);*/
      
      if (topicoo == "DISTANCIA") {
-        distaS = msg;
-        recebeDistancia(distaS);
+        
         Serial.print("Distancia Semafaro: ");
-        Serial.println(distaS);
-        Serial.println(recebeDistancia(distaS));
-        disSem = recebeDistancia(distaS);
+        Serial.println(msg);
+       
+        disSem = recebeDistancia(msg);
+         
      } 
+
+     if (topicoo == "VAGA1"){
+        Serial.print("Distancia Vaga: ");
+        Serial.println(msg);
+        disVaga = recebeDistanciaVaga(msg);
+     }
+     
 }

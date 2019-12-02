@@ -9,9 +9,9 @@ void distancia() {
   
     digitalWrite(TRIGGERdir, LOW);
     duration = pulseIn(ECHOdir, HIGH);
-    fre = (duration/2) / 29.1;
+    dir = (duration/2) / 29.1;
     Serial.print("Frente: ");
-    Serial.println(fre);
+    Serial.println(dir);
 }
 
 

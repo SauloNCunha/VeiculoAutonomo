@@ -51,6 +51,8 @@ int maxSpeed = 100;/*1020;*/
 int noSpeed = 0;
 int pos = 90; /*SERVO SÓ GIRA 180*/
 
+boolean controle = false;
+
 
 Adafruit_VL53L0X lox = Adafruit_VL53L0X(); /*DECLARAÇÃO DO LASER*/
 
@@ -134,15 +136,19 @@ void loop() {
     }
     
     frente();
-    if (fre >= 10) {
+    Serial.println("aqui");
        //// mexer aqui de acordo com a vaga
-       if (disSem < 30) {
-          if (disVaga <= 15){
+       if ( (disSem < 30) && (!controle) ) {
+        controle = true;
+       }
+        
+          if ((disVaga <= 6) && (controle)){
              pontomorto();
              delay(5000);
              re();
              delay(10000);
              pontomorto();
+             controle = false;
              delay(1000);
              frente();
              if ((esq >= 5) &&(esq <= 6 )) {
@@ -156,35 +162,6 @@ void loop() {
                 //Serial.println("segue pq não entrou em nada");
                 frente();
           }
-       }
-    }else{
-      pontomorto();
-    }  
-}
-
-    /* CARRIHO LENDO ULTRASSONICO PARA DIREITA */
+       
     
-    /*
-    if (disSem < 30) {
-      frente();
-      
-    }else{
-      pontomorto();
-    }
-    */
-    
-
-    /* -------------------------------------- */
-
-/*
- if((dir >= 5) && (dir <= 6 )) {
-                    reto();
-                }else if (dir >= 6.1 ){
-                      direita();    
-                }else if(dir <= 4.9){
-                      esquerda();
-                }
- * 
- * 
- */
-    
+}    
